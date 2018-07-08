@@ -52,10 +52,13 @@ namespace packt_webapp
                 app.UseDeveloperExceptionPage();
             }
 
+            if (env.IsEnvironment("MyEnvironment"))
+            {
+                app.UseCustomMiddleware();
+            }
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
-
-            app.UseCustomMiddleware();
 
             app.UseMvc();
         }
