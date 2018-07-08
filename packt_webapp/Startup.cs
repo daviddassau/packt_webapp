@@ -7,17 +7,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using packt_webapp.Entities;
 using packt_webapp.Middlewares;
 
 namespace packt_webapp
 {
-    public class MyConfiguration
-    {
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
-    }
 
     public class Startup
     {
@@ -40,7 +37,9 @@ namespace packt_webapp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.Configure<MyConfiguration>(Configuration);
+
+            services.AddDbContext<PacktDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddMvc();
         }
 
