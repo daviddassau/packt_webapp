@@ -13,6 +13,6 @@ namespace packt_webapp.Entities
 
         }
 
-        DbSet<Customer> Customers { get; set; }
+        public DbSet<Customer> Customers { get; set; }
     }
 }

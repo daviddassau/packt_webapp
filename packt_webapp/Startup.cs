@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using packt_webapp.Entities;
 using packt_webapp.Middlewares;
+using packt_webapp.Repositories;
 
 namespace packt_webapp
 {
@@ -24,8 +25,9 @@ namespace packt_webapp
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json")
+                .AddEnvironmentVariables();
 
             Configuration = builder.Build();
         }
@@ -39,6 +41,8 @@ namespace packt_webapp
             services.AddOptions();
 
             services.AddDbContext<PacktDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
 
             services.AddMvc();
         }
